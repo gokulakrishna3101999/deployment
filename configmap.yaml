@@ -1,0 +1,11 @@
+# yamllint disable
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap
+data:
+  restaurantdb_url: jdbc:mysql://mysql-db-instance.cej4wawmwxjd.us-east-1.rds.amazonaws.com:3306/restaurant_app
+  foodcataloguedb_url: jdbc:mysql://mysql-db-instance.cej4wawmwxjd.us-east-1.rds.amazonaws.com:3306/food_catalogue_app
+  userdb_url: jdbc:mysql://mysql-db-instance.cej4wawmwxjd.us-east-1.rds.amazonaws.com:3306/userinfo_app
+  orderdb_url: mongodb+srv://root:ILoveSilviya@atlas-cluster.gq9vifd.mongodb.net/?retryWrites=true&w=majority
+  eureka_service_address: http://eureka-0.eureka-service:8761/eureka
