@@ -38,7 +38,8 @@ Steps for creating and configuring ALB in EKS (refer aws documentation - https:/
 6. Verify it’s running - kubectl get pods -n cert-manager
 
 7. Install AWS Load Balancer Controller (Download the controller manifest) - curl -Lo v2_14_1_full.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.14.1/v2_14_1_full.yaml
-7. remove the ServiceAccount section in the v2_14_1_full.yaml manifest file
+
+8. remove the ServiceAccount section in the v2_14_1_full.yaml manifest file
 
 apiVersion: v1
 kind: ServiceAccount
@@ -50,7 +51,7 @@ metadata:
   namespace: kube-system
 ---
 
-8. Replace your-cluster-name in the Deployment spec section of the file.
+9. Replace your-cluster-name in the Deployment spec section of the file.
     spec:
       containers:
       - args:
@@ -60,4 +61,4 @@ metadata:
         - --aws-region=us-east-1
         image: public.ecr.aws/eks/aws-load-balancer-controller:v2.14.1
 
-9. To deploy alb in eks - kubectl apply -f v2_14_1_full.yaml
+10. To deploy alb in eks - kubectl apply -f v2_14_1_full.yaml
