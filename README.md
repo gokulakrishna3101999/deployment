@@ -37,9 +37,9 @@ Steps for creating and configuring ALB in EKS (refer aws documentation - https:/
 
 6. Verify it’s running - kubectl get pods -n cert-manager
 
-7. Install AWS Load Balancer Controller (Download the controller manifest) - curl -Lo v2_14_1_full.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.14.1/v2_14_1_full.yaml
+7. Install AWS Load Balancer Controller (Download the controller manifest) - curl -Lo alb.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.14.1/v2_14_1_full.yaml
 
-8. remove the ServiceAccount section in the v2_14_1_full.yaml manifest file
+8. remove the ServiceAccount section in the alb.yaml manifest file
 
 apiVersion: v1
 kind: ServiceAccount
@@ -61,4 +61,24 @@ metadata:
         - --aws-region=us-east-1
         image: public.ecr.aws/eks/aws-load-balancer-controller:v2.14.1
 
-10. To deploy alb in eks - kubectl apply -f v2_14_1_full.yaml
+10. To deploy alb in eks - kubectl apply -f alb.yaml
+
+11. Download the IngressClass and IngressClassParams manifest to your cluster -  curl -Lo v2.14.1_ingclass.yaml https://github.com/kubernetes-sigs/aws-load-balancer-controller/releases/download/v2.14.1/v2_14_1_ingclass.yaml
+
+12. Apply the manifest to your cluster - kubectl apply -f v2_14_1_ingclass.yaml
+
+13. Verify that the controller is installed - kubectl get deployment -n kube-system aws-load-balancer-controller
+
+14. Create Ingress file - with the contents of the file ingress-manifest.yaml.
+
+15. binding the permission to the respective service account in eks by the below command
+
+    aws iam put-role-policy --role-name AmazonEKSLoadBalancerControllerRole --policy-name AWSLoadBalancerControllerIAMPolicy --policy-document file://iam_policy.json
+
+16. restart all the deployment - kubectl rollout restart deployment aws-load-balancer-controller -n kube-system
+
+17. delete and recreate ingress if needed
+
+    kubectl delete ingress aws-ingress
+    kubectl apply -f aws-ingress.yaml
+ 
